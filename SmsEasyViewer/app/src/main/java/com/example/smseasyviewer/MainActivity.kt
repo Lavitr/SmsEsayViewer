@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         val typeColIdx = cursor.getColumnIndex(typeCol)
         var i = 0
 
-        while (cursor.moveToNext() && i<15) {
+        while (cursor.moveToNext() && i<10) {
             val number = cursor.getString(numberColIdx)
             val text = cursor.getString(textColIdx)
             val type = cursor.getString(typeColIdx)
