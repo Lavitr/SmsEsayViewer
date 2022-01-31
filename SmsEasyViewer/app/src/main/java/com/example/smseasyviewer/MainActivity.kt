@@ -6,16 +6,17 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Telephony
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import android.icu.util.Calendar
 import android.os.Build
 import android.icu.text.DateFormat
+import android.provider.Telephony
 import android.widget.*
 import androidx.annotation.RequiresApi
 import com.google.android.material.textfield.TextInputLayout
+import com.example.smseasyviewer.utils.readSms
 
 class MainActivity : AppCompatActivity() {
     private val requestPermissionLauncher =
@@ -72,10 +73,20 @@ class MainActivity : AppCompatActivity() {
                 myCalendar[Calendar.DAY_OF_MONTH]
             ).show()
         }
+        //cursor
+        val numberCol = Telephony.TextBasedSmsColumns.ADDRESS
+        val textCol = Telephony.TextBasedSmsColumns.BODY
+        val typeCol = Telephony.TextBasedSmsColumns.TYPE // 1 - Inbox, 2 - Sent
+        val projection = arrayOf(numberCol, textCol, typeCol)
+        val cursor = contentResolver.query(
+            Telephony.Sms.CONTENT_URI,
+            projection, null, null, Telephony.Sms.Inbox.DEFAULT_SORT_ORDER
+        )
+        //cursor
 
         val button = findViewById<Button>(R.id.button)
         button.setOnClickListener {
-            val data = readSms()
+            val data = readSms(cursor)
             Intent(this, ResultViewActivity::class.java).also {
                 it.putExtra("hashMap", data)
                 startActivity(it)
@@ -95,37 +106,5 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
-    }
-
-    private fun readSms(): HashMap<String, Int> {
-        val numberCol = Telephony.TextBasedSmsColumns.ADDRESS
-        val textCol = Telephony.TextBasedSmsColumns.BODY
-        val typeCol = Telephony.TextBasedSmsColumns.TYPE // 1 - Inbox, 2 - Sent
-
-        val projection = arrayOf(numberCol, textCol, typeCol)
-
-        val cursor = contentResolver.query(
-            Telephony.Sms.CONTENT_URI,
-            projection, null, null, Telephony.Sms.Inbox.DEFAULT_SORT_ORDER
-        )
-
-        val numberColIdx = cursor!!.getColumnIndex(numberCol)
-        val textColIdx = cursor.getColumnIndex(textCol)
-        val typeColIdx = cursor.getColumnIndex(typeCol)
-        var i = 0
-        val dataSet = HashMap<String, Int>()
-        while (cursor.moveToNext() && i < 30) {
-            val sender = cursor.getString(numberColIdx)
-            val textBody = cursor.getString(textColIdx)
-            val type = cursor.getString(typeColIdx)
-
-            Log.d("MY_APP::$i", "$sender :: $textBody :: $type")
-            dataSet[textBody.trim().slice(0..30)] = i
-            i++
-        }
-
-//        Log.d("MY_APP::dataSet", dataSet.toString())
-        cursor.close()
-        return dataSet
     }
 }

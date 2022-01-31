@@ -1,13 +1,12 @@
 package com.example.happybirthday.adapter
 
+import SmsData
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.happybirthday.model.Affirmation
-import com.example.happybirthday.model.SmsData
 import com.example.smseasyviewer.R
 import java.io.Serializable
 
