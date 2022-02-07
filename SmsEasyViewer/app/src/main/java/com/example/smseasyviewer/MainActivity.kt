@@ -4,19 +4,19 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
+import android.icu.text.DateFormat
 import android.icu.util.Calendar
 import android.os.Build
-import android.icu.text.DateFormat
+import android.os.Bundle
 import android.provider.Telephony
-import android.widget.*
+import android.util.Log
+import android.widget.Button
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import com.google.android.material.textfield.TextInputLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.smseasyviewer.utils.readSms
+import com.google.android.material.textfield.TextInputLayout
 
 class MainActivity : AppCompatActivity() {
     private val requestPermissionLauncher =
@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+    private val dateFrom: TextInputLayout? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,56 +42,44 @@ class MainActivity : AppCompatActivity() {
         val outlinedTextField = findViewById<TextInputLayout>(R.id.outlinedTextField)
         val outlinedTextField2 = findViewById<TextInputLayout>(R.id.outlinedTextField2)
 
-        val datePickerListener =
+        fun datePickerListener1(textInput: TextInputLayout) =
             OnDateSetListener { view, year, monthOfYear, dayOfMonth -> // TODO Auto-generated method stub
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONTH, monthOfYear)
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                 val text = DateFormat.getDateInstance().format(myCalendar.time)
-                outlinedTextField.editText?.setText(text)
-            }
-
-        val datePickerListener1 =
-            OnDateSetListener { view, year, monthOfYear, dayOfMonth -> // TODO Auto-generated method stub
-                myCalendar.set(Calendar.YEAR, year)
-                myCalendar.set(Calendar.MONTH, monthOfYear)
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                val text = DateFormat.getDateInstance().format(myCalendar.time)
-                outlinedTextField2.editText?.setText(text)
+                textInput.editText?.setText(text)
             }
 
         outlinedTextField.editText?.setOnClickListener {
             DatePickerDialog(
-                this@MainActivity, datePickerListener,
+                this@MainActivity, datePickerListener1(outlinedTextField),
                 myCalendar[Calendar.YEAR], myCalendar[Calendar.MONTH],
                 myCalendar[Calendar.DAY_OF_MONTH]
             ).show()
         }
         outlinedTextField2.editText?.setOnClickListener {
             DatePickerDialog(
-                this@MainActivity, datePickerListener1,
+                this@MainActivity, datePickerListener1(outlinedTextField2),
                 myCalendar[Calendar.YEAR], myCalendar[Calendar.MONTH],
                 myCalendar[Calendar.DAY_OF_MONTH]
             ).show()
         }
-        //cursor
-        val numberCol = Telephony.TextBasedSmsColumns.ADDRESS
-        val textCol = Telephony.TextBasedSmsColumns.BODY
-        val typeCol = Telephony.TextBasedSmsColumns.TYPE // 1 - Inbox, 2 - Sent
-        val projection = arrayOf(numberCol, textCol, typeCol)
-        val cursor = contentResolver.query(
-            Telephony.Sms.CONTENT_URI,
-            projection, null, null, Telephony.Sms.Inbox.DEFAULT_SORT_ORDER
-        )
-        //cursor
 
         val button = findViewById<Button>(R.id.button)
         button.setOnClickListener {
-            val data = readSms(cursor)
+            val projection = arrayOf("address", "body", "type")
+            val cursor = contentResolver.query(
+                Telephony.Sms.CONTENT_URI,
+                projection, null, null, Telephony.Sms.Inbox.DEFAULT_SORT_ORDER
+            )
+            val (data, count) = readSms(cursor)
             Intent(this, ResultViewActivity::class.java).also {
                 it.putExtra("hashMap", data)
+                it.putExtra("count", count)
                 startActivity(it)
             }
+            cursor!!.close()
         }
 
         when (PackageManager.PERMISSION_GRANTED) {
@@ -107,4 +96,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 }

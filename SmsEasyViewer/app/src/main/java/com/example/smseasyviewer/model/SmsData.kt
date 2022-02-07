@@ -1,2 +1,2 @@
-Edata class SmsData (val name : String, val value: Float) {
+data class SmsData(val name: String, val value: Int) {
 }
