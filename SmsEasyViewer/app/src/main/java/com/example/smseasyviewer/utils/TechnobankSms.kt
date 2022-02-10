@@ -9,8 +9,11 @@ fun getTechnobankData(textBody: String, dataSet: HashMap<String, Int>) {
         Log.d("MY_APP::", "$textBody")
         val twoStrings = textBody.trim().split("BYN ")
         if (twoStrings.size == 2) {
-            var location = twoStrings[1].split(".")[0].replace("BLR OK", "")
-            location = location.replace("SHOP", "").replace("VITEBSK", "")
+            var location = twoStrings[1].split("OK.")[0]
+            location = location.replace("SHOP", "")
+                .replace("VITEBSK", "")
+                .replace("MINSK", "")
+                .replace("BPS", "")
             val sum = paymentPattern.find(twoStrings[0])
             val value = sum?.value.toString().replace("Retail", "").replace("-", "").trim()
             val intValue = value.split(".")[0].toInt()

@@ -18,6 +18,8 @@ class ResultViewActivity : AppCompatActivity() {
 
         val myDataset = intent.getSerializableExtra("hashMap") as HashMap<String, Int>
         val count = intent.getIntExtra("count", 0)
+        val from = intent.getStringExtra("from")
+        val to = intent.getStringExtra("to")
         val listData = myDataset.toList().sortedByDescending { (_, value) -> value }
             .map { SmsData(it.first, it.second) }
 //        val listData = Datasource().loadSmsData()
@@ -26,8 +28,12 @@ class ResultViewActivity : AppCompatActivity() {
         recyclerView.adapter = ItemAdapter(this, listData)
         recyclerView.setHasFixedSize(true)
         /////////////////////////
-        val countText = findViewById<TextView>(R.id.count)
-        countText.text = count.toString()
+        val textFrom = findViewById<TextView>(R.id.textViewFrom)
+        val textTo = findViewById<TextView>(R.id.textViewTo)
+        textFrom.text = from
+        textTo.text = to
+//        val countText = findViewById<TextView>(R.id.count)
+//        countText.text = count.toString()
 
         val buttonBack = findViewById<Button>(R.id.button_back)
         buttonBack.setOnClickListener {

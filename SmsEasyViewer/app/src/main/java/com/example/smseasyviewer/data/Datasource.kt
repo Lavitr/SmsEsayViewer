@@ -15,7 +15,6 @@ class Datasource {
             SmsData("affirmation1", 225),
             SmsData("affirmation1", 225),
             SmsData("affirmation1", 223),
-
         )
     }
 }
