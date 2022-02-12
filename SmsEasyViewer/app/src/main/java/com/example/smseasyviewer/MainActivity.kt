@@ -12,21 +12,23 @@ import android.provider.Telephony
 import android.util.Log
 import android.widget.Button
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.smseasyviewer.utils.readSms
 import com.google.android.material.textfield.TextInputLayout
+import java.time.LocalDateTime
 
-var fromDate: Long = 0L
-var toDate: Long = System.currentTimeMillis()
-var bankID = 1
-var fromDateString= ""
-var toDateString= ""
-
+@RequiresApi(Build.VERSION_CODES.O)
 class MainActivity : AppCompatActivity() {
+    var fromDate: Long = 0L
+    var toDate: Long = System.currentTimeMillis()
+    var bankID = 0
+    var fromDateString = ""
+    var dateToday = LocalDateTime.now().toString().split("T")[0]
+    var toDateString = dateToday
+
     private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -48,15 +50,18 @@ class MainActivity : AppCompatActivity() {
         val radioButton2 = findViewById<RadioButton>(R.id.radio_button_2)
 
         radioButton1.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) bankID = 1
+            if (isChecked) bankID = 0
         }
         radioButton2.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) bankID = 2
+            if (isChecked) bankID = 1
         }
         //datePicker
         val myCalendar = Calendar.getInstance()
         val outlinedTextField = findViewById<TextInputLayout>(R.id.outlinedTextField)
         val outlinedTextField2 = findViewById<TextInputLayout>(R.id.outlinedTextField2)
+        outlinedTextField.editText?.showSoftInputOnFocus = false
+        outlinedTextField2.editText?.showSoftInputOnFocus = false
+
 
         fun datePickerListener(isFrom: Boolean) =
             OnDateSetListener { view, year, monthOfYear, dayOfMonth -> // TODO Auto-generated method stub
@@ -92,10 +97,12 @@ class MainActivity : AppCompatActivity() {
 
         outlinedTextField.setEndIconOnClickListener {
             fromDate = 0L
+            fromDateString = ""
             outlinedTextField.editText?.setText("")
         }
         outlinedTextField2.setEndIconOnClickListener {
             toDate = System.currentTimeMillis()
+            toDateString = dateToday
             outlinedTextField2.editText?.setText("")
         }
 
@@ -109,12 +116,14 @@ class MainActivity : AppCompatActivity() {
                 null,
                 Telephony.Sms.Inbox.DEFAULT_SORT_ORDER
             )
-            val (data, count) = readSms(cursor, bankID)
+            val (data, count, sum) = readSms(cursor, bankID)
             Intent(this, ResultViewActivity::class.java).also {
                 it.putExtra("hashMap", data)
                 it.putExtra("count", count)
                 it.putExtra("from", fromDateString)
                 it.putExtra("to", toDateString)
+                it.putExtra("bankID", bankID)
+                it.putExtra("sum", sum)
                 startActivity(it)
             }
             cursor!!.close()

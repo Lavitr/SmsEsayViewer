@@ -4,10 +4,10 @@ import android.database.Cursor
 import android.provider.Telephony
 import android.util.Log
 
-data class Result(val data: HashMap<String, Int>, val count: Int)
+data class Result(val data: HashMap<String, Int>, val count: Int, val sum: Int)
 
 fun readSms(cursor: Cursor?, bankID: Int): Result {
-    Log.d("bankID!!!readSms", "$bankID")
+    var sum = 0
     val numberCol = Telephony.TextBasedSmsColumns.ADDRESS
     val textCol = Telephony.TextBasedSmsColumns.BODY
     val typeCol = Telephony.TextBasedSmsColumns.TYPE // 1 - Inbox, 2 - Sent
@@ -25,16 +25,17 @@ fun readSms(cursor: Cursor?, bankID: Int): Result {
         val textBody = cursor.getString(textColIdx)
         val type = cursor.getString(typeColIdx)
         val date = cursor.getString(dateColIdx)
-        if (sender == "Technobank" && type == "1" && bankID == 2) {
+        if (sender == "Technobank" && type == "1" && bankID == 1) {
             Log.d("Technobank::$sender ", "$textBody --- $date")
             getTechnobankData(textBody, dataSet)
             count++
-        } else if (sender == "Priorbank" && type == "1" && bankID == 1) {
+        } else if (sender == "Priorbank" && type == "1" && bankID == 0) {
             Log.d("Priorbank::$sender ", "$textBody")
             getPriorData(textBody, dataSet)
             count++
         }
     }
-    return Result(dataSet, count)
+    dataSet.values.forEach{value -> sum = sum+value}
+    return Result(dataSet, count, sum)
 };
 

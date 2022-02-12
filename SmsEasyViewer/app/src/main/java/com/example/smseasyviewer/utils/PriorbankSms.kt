@@ -13,6 +13,7 @@ fun getPriorData(textBody: String, dataSet: HashMap<String, Int>) {
             val sum = paymentPattern.find(twoStrings[0])
             val value = sum?.value.toString().replace("Oplata", "").trim()
             val intValue = value.split(".")[0].toInt()
+
             if (dataSet.containsKey(location[0])) {
                 dataSet[location[0]] = dataSet[location[0]]!! + intValue
             } else {
