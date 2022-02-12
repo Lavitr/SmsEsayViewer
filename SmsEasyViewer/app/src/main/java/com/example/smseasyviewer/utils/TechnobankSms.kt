@@ -13,10 +13,12 @@ fun getTechnobankData(textBody: String, dataSet: HashMap<String, Int>) {
             val sum = paymentPattern.find(twoStrings[0])
             val value = sum?.value.toString().replace("Retail", "").replace("-", "").trim()
             val intValue = value.split(".")[0].toInt()
-            if (dataSet.containsKey(location)) {
-                dataSet[location] = dataSet[location]!! + intValue
-            } else {
-                dataSet[location] = intValue
+            if (intValue >= 1) {
+                if (dataSet.containsKey(location)) {
+                    dataSet[location] = dataSet[location]!! + intValue
+                } else {
+                    dataSet[location] = intValue
+                }
             }
         }
     }

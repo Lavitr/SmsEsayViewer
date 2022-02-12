@@ -27,8 +27,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:text="&lt;&lt; Back  "
+        android:backgroundTint="#B5B3A3"
+        android:text="&lt;&lt;&lt;   Back"
         android:textSize="14sp"
+        android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,8 +38,9 @@
         android:id="@+id/dateWrapper"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -48,7 +51,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="From: "
+            android:text="From:  "
             android:textSize="16sp" />
 
         <TextView
@@ -64,7 +67,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="To: "
+            android:text="To:  "
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -99,7 +102,7 @@
             android:layout_weight="1"
             android:background="#FFF"
             android:text="SMS COUNT"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/totalSum"
@@ -108,23 +111,21 @@
             android:layout_weight="1"
             android:background="#fff"
             android:text="TOTAL SUM:"
-            android:textAlignment="viewEnd"
-            android:textColor="#E91E63"
-            android:textSize="16sp" />
+            android:textColor="#D81B60"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/bankName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TOTAL SUM:"
-        android:textAlignment="viewEnd"
-        android:textColor="#71052A"
-
-        android:textSize="22sp"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toTopOf="@+id/dateWrapper"
+        android:layout_marginTop="8dp"
+        android:text="PRIOR BANK"
+        android:textColor="#C3B113"
+        android:textSize="26sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button_back"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

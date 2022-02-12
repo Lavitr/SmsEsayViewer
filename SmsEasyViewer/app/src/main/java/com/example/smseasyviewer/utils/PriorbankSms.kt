@@ -6,18 +6,26 @@ fun getPriorData(textBody: String, dataSet: HashMap<String, Int>) {
     val paymentPattern = Regex("Oplata(.*)")
     val pattern = Regex("(.*)Oplata(.*)Dostupno(.*)")
     if (textBody.matches(pattern)) {
-        Log.d("MY_APP::", "$textBody")
         val twoStrings = textBody.trim().split("BYN. BLR")
         if (twoStrings.size == 2) {
-            val location = twoStrings[1].split(".")
+            val location = twoStrings[1].split("Dostupno")
+            if (textBody.trim().contains("WWW", true)) {
+                Log.d("PATTERN", "$twoStrings")
+            }
             val sum = paymentPattern.find(twoStrings[0])
             val value = sum?.value.toString().replace("Oplata", "").trim()
             val intValue = value.split(".")[0].toInt()
+            val locationName = ConvertLocationName(location[0])
 
-            if (dataSet.containsKey(location[0])) {
-                dataSet[location[0]] = dataSet[location[0]]!! + intValue
-            } else {
-                dataSet[location[0]] = intValue
+            if (locationName.trim().contains("WWW", true)) {
+                Log.d("PATTERN", "$textBody")
+            }
+            if (intValue >= 1) {
+                if (dataSet.containsKey(locationName)) {
+                    dataSet[locationName] = dataSet[locationName]!! + intValue
+                } else {
+                    dataSet[locationName] = intValue
+                }
             }
         }
     }

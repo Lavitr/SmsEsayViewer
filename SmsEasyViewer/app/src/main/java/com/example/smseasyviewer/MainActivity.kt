@@ -26,8 +26,8 @@ class MainActivity : AppCompatActivity() {
     var toDate: Long = System.currentTimeMillis()
     var bankID = 0
     var fromDateString = ""
-    var dateToday = LocalDateTime.now().toString().split("T")[0]
-    var toDateString = dateToday
+    var dateToday = LocalDateTime.now().toLocalDate().toString()
+    var toDateString = ""
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         }
         outlinedTextField2.setEndIconOnClickListener {
             toDate = System.currentTimeMillis()
-            toDateString = dateToday
+            toDateString = ""
             outlinedTextField2.editText?.setText("")
         }
 

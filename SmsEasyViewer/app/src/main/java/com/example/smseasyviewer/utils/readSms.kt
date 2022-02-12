@@ -26,11 +26,11 @@ fun readSms(cursor: Cursor?, bankID: Int): Result {
         val type = cursor.getString(typeColIdx)
         val date = cursor.getString(dateColIdx)
         if (sender == "Technobank" && type == "1" && bankID == 1) {
-            Log.d("Technobank::$sender ", "$textBody --- $date")
+//            Log.d("Technobank::$sender ", "$textBody --- $date")
             getTechnobankData(textBody, dataSet)
             count++
         } else if (sender == "Priorbank" && type == "1" && bankID == 0) {
-            Log.d("Priorbank::$sender ", "$textBody")
+//            Log.d("Priorbank::$sender ", "$textBody")
             getPriorData(textBody, dataSet)
             count++
         }

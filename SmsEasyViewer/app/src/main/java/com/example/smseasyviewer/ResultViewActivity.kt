@@ -1,6 +1,7 @@
 package com.example.smseasyviewer
 
 import SmsData
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -40,8 +41,15 @@ class ResultViewActivity : AppCompatActivity() {
         textFrom.text = from
         textTo.text = to
         bankName.text = if (bankID == 0) "PRIOR BANK" else "TECHNO BANK"
+//        bankName.text = if (bankID == 0) bankName.setTextColor("orange") else "TECHNO BANK"
         countSms.text = " SMS COUNT:  $count"
         totalSum.text = " TOTAL SUM:  $sum  "
+        if(bankID == 0) {
+            bankName.setTextColor(Color.parseColor("#C3B113"))
+        }
+        if(bankID == 1) {
+            bankName.setTextColor(Color.parseColor("#2196F3"))
+        }
 
 
         val buttonBack = findViewById<Button>(R.id.button_back)
