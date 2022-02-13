@@ -2,7 +2,7 @@ package com.example.smseasyviewer.utils
 
 import android.util.Log
 
-fun getPriorData(textBody: String, dataSet: HashMap<String, Int>) {
+fun getPriorData(textBody: String, dataSet: HashMap<String, Int>): Int {
     val paymentPattern = Regex("Oplata(.*)")
     val pattern = Regex("(.*)Oplata(.*)Dostupno(.*)")
     if (textBody.matches(pattern)) {
@@ -19,7 +19,9 @@ fun getPriorData(textBody: String, dataSet: HashMap<String, Int>) {
                 } else {
                     dataSet[locationName] = intValue
                 }
+                return 1
             }
         }
     }
+    return 0
 }

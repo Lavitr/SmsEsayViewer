@@ -2,7 +2,7 @@ package com.example.smseasyviewer.utils
 
 import android.util.Log
 
-fun getTechnobankData(textBody: String, dataSet: HashMap<String, Int>) {
+fun getTechnobankData(textBody: String, dataSet: HashMap<String, Int>): Int {
     val paymentPattern = Regex("Retail(.*)")
     val pattern = Regex("(.*)Retail(.*)")
     if (textBody.matches(pattern)) {
@@ -19,7 +19,9 @@ fun getTechnobankData(textBody: String, dataSet: HashMap<String, Int>) {
                 } else {
                     dataSet[location] = intValue
                 }
+                return 1
             }
         }
     }
+    return 0
 }

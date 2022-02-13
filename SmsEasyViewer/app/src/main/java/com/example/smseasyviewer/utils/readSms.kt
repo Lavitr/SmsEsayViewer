@@ -27,15 +27,13 @@ fun readSms(cursor: Cursor?, bankID: Int): Result {
         val date = cursor.getString(dateColIdx)
         if (sender == "Technobank" && type == "1" && bankID == 1) {
 //            Log.d("Technobank::$sender ", "$textBody --- $date")
-            getTechnobankData(textBody, dataSet)
-            count++
+            count += getTechnobankData(textBody, dataSet)
         } else if (sender == "Priorbank" && type == "1" && bankID == 0) {
 //            Log.d("Priorbank::$sender ", "$textBody")
-            getPriorData(textBody, dataSet)
-            count++
+            count += getPriorData(textBody, dataSet)
         }
     }
-    dataSet.values.forEach{value -> sum = sum+value}
+    dataSet.values.forEach { value -> sum = sum + value }
     return Result(dataSet, count, sum)
 };
 
